@@ -1,0 +1,2 @@
+class PersistException(Exception):
+    pass

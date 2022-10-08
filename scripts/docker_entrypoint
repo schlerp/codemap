@@ -1,0 +1,5 @@
+#!/bin/sh
+
+ls -la /app
+
+cd /app && python3 -m codemap "$@"
