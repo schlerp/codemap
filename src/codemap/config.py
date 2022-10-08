@@ -32,3 +32,6 @@ if IS_TEST:
     DATABASE_URL = "sqlite:///./test.db"
 else:
     DATABASE_URL = get_env("DATABASE_URL", is_required=True)
+
+API_HOST = get_env("API_HOST", default="0.0.0.0")
+API_PORT = get_env("API_PORT", default=8123)

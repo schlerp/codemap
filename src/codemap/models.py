@@ -1,11 +1,17 @@
-from codemap.persist import Base
+from codemap.adapaters import Base
 from sqlalchemy import Column
 from sqlalchemy import ForeignKey
 from sqlalchemy import Integer
 from sqlalchemy import LargeBinary
 from sqlalchemy import String
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
+
+
+class CodeSet(Base):
+    __tablename__ = "codeset"
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    codes = relationship("Code", back_populates="codeset")
 
 
 class Code(Base):
@@ -17,9 +23,3 @@ class Code(Base):
     value_type = Column(String)
     codeset_id = Column(Integer, ForeignKey("CodeSet.id"))
     codeset = relationship("CodeSet", back_populates="codes")
-
-class CodeSet(Base):
-    __tablename__ = "codeset"
-    id = Column(Integer, primary_key=True)
-    name = Column(String)
-    codes = relationship("Code", back_populates="codeset")
