@@ -14,7 +14,7 @@ router = fastapi.APIRouter(
 )
 
 
-@router.get("/", response_model=List[schemas.CodeSet])
+@router.get("/", response_model=List[schemas.CodeSetDatabase])
 async def get_all_codesets():
     """Get all codesets"""
     response = await persist.get_all_codesets()
@@ -22,7 +22,7 @@ async def get_all_codesets():
     return response
 
 
-@router.get("/{name}", response_model=schemas.CodeSet)
+@router.get("/{name}", response_model=schemas.CodeSetDatabase)
 async def get_codeset(name: str):
     """Get a specific codeset by name"""
     response = persist.get_codeset(name)
@@ -33,20 +33,20 @@ async def get_codeset(name: str):
     return response
 
 
-@router.post("/", response_model=schemas.CodeSet)
-async def create_codeset(codeset: schemas.CodeSet):
+@router.post("/", response_model=schemas.CodeSetDatabase)
+async def create_codeset(codeset: schemas.CodeSetBase):
     """Create a new codeset"""
-    response, error = persist.create_codeset(codeset)
+    response, error = await persist.create_codeset(codeset)
     # TODO: better error handling for unique error cases (conflict etc)
     if error:
         raise fastapi.HTTPException(status_code=500, detail="an error occured")
     return response
 
 
-@router.put("/{name}", response_model=schemas.CodeSet)
-async def update_codeset(name: str, codeset: schemas.CodeSet):
+@router.put("/", response_model=schemas.CodeSetDatabase)
+async def update_codeset(codeset: schemas.CodeSetBase):
     """Update an existing codeset"""
-    response, error = persist.update_codeset(codeset)
+    response, error = await persist.update_codeset(codeset)
     # TODO: better error handling for unique error cases (conflict etc)
     if error:
         raise fastapi.HTTPException(status_code=500, detail="an error occured")
@@ -63,21 +63,21 @@ async def delete_codeset(name: str):
     return response
 
 
-@router.post("/{name}/add", response_model=schemas.CodeSet)
-async def add_code(name: str, code: schemas.Code):
+@router.post("/{name}/add", response_model=schemas.CodeSetDatabase)
+async def add_code(name: str, code: schemas.CodeBase):
     """Add a code to an existing codeset"""
-    response, error = persist.add_code_to_codeset(name, code)
+    response, error = await persist.add_code_to_codeset(name, code)
     # TODO: better error handling for unique error cases (conflict etc)
     if error:
         raise fastapi.HTTPException(status_code=500, detail="an error occured")
     return response
 
 
-@router.put("/{name}/{key}", response_model=schemas.CodeSet)
+@router.put("/{name}/{key}", response_model=schemas.CodeSetDatabase)
 async def update_code(
     name: str,
     key: str,
-    code: schemas.Code,
+    code: schemas.CodeBase,
 ):
     """Update an existing code on an existing codeset"""
     response, error = persist.update_code_in_codeset(name, key, code)
@@ -87,7 +87,7 @@ async def update_code(
     return response
 
 
-@router.delete("/{name}/{key}", response_model=schemas.CodeSet)
+@router.delete("/{name}/{key}", response_model=schemas.CodeSetDatabase)
 async def delete_code(name: str, key: str):
     """Delete an existing code from an existing codeset"""
     response, error = persist.remove_code_from_codeset(name, key)

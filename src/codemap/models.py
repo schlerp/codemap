@@ -21,5 +21,5 @@ class Code(Base):
     value = Column(LargeBinary)
     code_type = Column(String)
     value_type = Column(String)
-    codeset_id = Column(Integer, ForeignKey("CodeSet.id"))
+    codeset_id = Column(Integer, ForeignKey("codeset.id"))
     codeset = relationship("CodeSet", back_populates="codes")
