@@ -19,19 +19,19 @@ def get_env(key: str, default: Any = None, is_required: bool = False) -> Any:
             LOGGER.error(f"ENV variable '{key}' must be set!")
             sys.exit(1)
         value = default
-        LOGGER.warn(f"ENV variable '{key}' is unset, falling back to: '{default}'")
-    LOGGER.debug(f"ENV variable '{key}' is '{default}'")
+        LOGGER.warning(f"ENV variable '{key}' is unset, falling back to: '{default}'")
+    LOGGER.debug(f"ENV variable '{key}' is '{value}'")
     return value
 
 
 VERSION = get_env("CODEMAP_VERSION", default="v0.0.1-local_dev")
 
-IS_TEST = get_env_flag("IS_TEST")
+DB_USER = get_env("DB_USER", default="neo4j")
+DB_PASSWORD = get_env("DB_PASSWORD", default="neo4j")
+DB_HOST = get_env("DB_HOST", default="neo4j")
+DB_PORT = get_env("DB_PORT", default="7687")
 
-if IS_TEST:
-    DATABASE_URL = "sqlite:///./test.db"
-else:
-    DATABASE_URL = get_env("DATABASE_URL", is_required=True)
+DATABASE_URL = f"bolt://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}"
 
 API_HOST = get_env("API_HOST", default="0.0.0.0")
 API_PORT = get_env("API_PORT", default=8123)

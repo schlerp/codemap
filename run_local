@@ -1,0 +1,60 @@
+#!/bin/bash
+
+USAGE=$(cat <<-END
+
+run_local
+---------
+
+  Usage: run_local [command]
+
+  Script used to spin up the dev environment.
+
+  Commands:
+      - start       start the containers
+      - dev         start the container with helpers
+      - stop        stop the containers
+      - destroy     remove the containers
+      - test        run tests
+END
+)
+
+export BASE_DIR=$(pwd)
+
+# create/source env file
+if [[ ! -z .env ]]; then
+    echo "no .env file, creating one with defaults..."
+    cp .env.example .env
+fi
+
+set -a
+source .env
+set +a
+
+# run command
+if [ ! -z $1 ]; then
+    if [ $1 == "start" ]; then
+        echo "starting containers..."
+        cd docker && docker-compose -f docker-compose.yml -f docker-compose.deploy.yml up --build --force-recreate
+    elif [ $1 == "dev" ]; then
+        echo "starting containers with helpers..."
+        cd docker && docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build --force-recreate
+    elif [ $1 == "stop" ]; then
+        echo "stopping containers..."
+        cd docker && docker-compose down
+    elif [ $1 == "destroy" ]; then
+        echo "removing containers..."
+        cd docker && docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.deploy.yml down -v --remove-orphans
+    elif [ $1 == 'test' ]; then
+        echo "running tests..."
+        cd docker && docker-compose -f docker-compose.yml -f docker-compose.test.yml up --build --force-recreate
+    else
+        echo "Invalid command: ${1}"
+        echo "${USAGE}"
+        exit 1
+    fi
+else
+    echo "No command supplied!"
+    echo ""
+    echo "${USAGE}"
+    exit 1
+fi

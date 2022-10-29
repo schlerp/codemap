@@ -1,33 +1,15 @@
-from typing import Generic
 from typing import List
-from typing import Type
-from typing import TypeVar
+from typing import Union
 
-import pydantic
-
-T = TypeVar("T")
-K = TypeVar("K")
-V = TypeVar("V")
+from pydantic import BaseModel
+from pydantic import Field
 
 
-class CodeAtom(pydantic.BaseModel, Generic[T]):
-    value: T
-    datatype: str  # Type[T] as str
+class Code(BaseModel):
+    key: str
+    value: str
 
 
-class CodeBase(pydantic.BaseModel, Generic[K, V]):
-    key: CodeAtom[K]
-    value: CodeAtom[V]
-
-
-class CodeDatabase(CodeBase):
-    id: int
-
-
-class CodeSetBase(pydantic.BaseModel):
+class CodeSet(BaseModel):
     name: str
-    codes: List[CodeBase | CodeDatabase]
-
-
-class CodeSetDatabase(CodeSetBase):
-    id: int
+    codes: List[Code] = Field(default_factory=list)

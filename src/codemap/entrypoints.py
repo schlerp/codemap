@@ -35,7 +35,6 @@ def _configure_prompt(*args):
         "codemap",
         "codemap.config",
         "codemap.exceptions",
-        "codemap.adapaters",
         "codemap.bootstrap",
         "codemap.entrypoints",
         "codemap.models",
