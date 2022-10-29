@@ -1,25 +1,32 @@
-from codemap.adapaters import Base
-from sqlalchemy import Column
-from sqlalchemy import ForeignKey
-from sqlalchemy import Integer
-from sqlalchemy import LargeBinary
-from sqlalchemy import String
-from sqlalchemy.orm import relationship
+from enum import Enum
+
+from codemap import config
+from neomodel import db
+from neomodel import IntegerProperty
+from neomodel import Relationship
+from neomodel import RelationshipFrom
+from neomodel import RelationshipTo
+from neomodel import StringProperty
+from neomodel import StructuredNode
+from neomodel import UniqueIdProperty
+
+db.set_connection(config.DATABASE_URL)
 
 
-class CodeSet(Base):
+MEMBER_OF = "MEMBER_OF"
+IS_ALIAS = "IS_ALIAS"
+
+
+class CodeSet(StructuredNode):
     __tablename__ = "codeset"
-    id = Column(Integer, primary_key=True)
-    name = Column(String)
-    codes = relationship("Code", back_populates="codeset")
+    _id = UniqueIdProperty()
+    name = StringProperty(required=True)
+    codes = RelationshipFrom("Code", MEMBER_OF)
 
 
-class Code(Base):
+class Code(StructuredNode):
     __tablename__ = "code"
-    id = Column(Integer, primary_key=True)
-    code = Column(LargeBinary)
-    value = Column(LargeBinary)
-    code_type = Column(String)
-    value_type = Column(String)
-    codeset_id = Column(Integer, ForeignKey("codeset.id"))
-    codeset = relationship("CodeSet", back_populates="codes")
+    _id = UniqueIdProperty()
+    key = StringProperty(required=True)
+    value = StringProperty(required=True)
+    codesets = RelationshipTo("CodeSet", MEMBER_OF)
