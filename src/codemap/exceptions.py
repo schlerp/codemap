@@ -4,3 +4,7 @@ class PersistException(Exception):
 
 class ExistsException(PersistException):
     pass
+
+
+class NoDatabaseConfiguredException(PersistException):
+    pass

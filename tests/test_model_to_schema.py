@@ -11,7 +11,7 @@ def test_code():
     assert test_schema.value == test_model.value
 
 
-def test_codeset_empty():
+def test_codeset():
     test_model = models.CodeSet(name="test_name")
     test_schema = model_to_schema(test_model, schemas.CodeSet)
     assert isinstance(test_schema, schemas.CodeSet)

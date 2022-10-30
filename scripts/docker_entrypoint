@@ -8,8 +8,5 @@ cd /app
 # activate the python env
 source /venv/bin/activate
 
-# setup the neo4j database
-neomodel_install_labels codemap.models --db "bolt://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}"
-
 # run the application
 python3 -m codemap "$@"
