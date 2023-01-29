@@ -36,11 +36,11 @@ async def get_codeset(name: str):
 @router.post("/", response_model=schemas.CodeSet)
 async def create_codeset(codeset: schemas.CodeSet):
     """Create a new codeset"""
-    # try:
-    response = persist.create_codeset(codeset)
-    # except Exception as e:
-    ## TODO: better error handling for unique error cases (conflict etc)
-    # raise fastapi.HTTPException(status_code=500, detail=str(e)) from e
+    try:
+        response = persist.create_codeset(codeset)
+    except Exception as e:
+        # TODO: better error handling for unique error cases (conflict etc)
+        raise fastapi.HTTPException(status_code=500, detail=str(e)) from e
     return response
 
 
