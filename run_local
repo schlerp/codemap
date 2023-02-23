@@ -37,7 +37,8 @@ if [ ! -z $1 ]; then
         cd docker && docker-compose -f docker-compose.yml -f docker-compose.deploy.yml up --build --force-recreate
     elif [ $1 == "dev" ]; then
         echo "starting containers with helpers..."
-        cd docker && docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build --force-recreate
+        #cd docker && docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build --force-recreate
+        cd docker && docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
     elif [ $1 == "stop" ]; then
         echo "stopping containers..."
         cd docker && docker-compose down
