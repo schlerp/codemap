@@ -1,26 +1,22 @@
 <script lang="ts">
-    import { pages } from "../lib/constants";
-    import { currentPage } from "../lib/stores";
+    import { codeSets } from "../lib/stores";
 
-    function setPage(page: string) {
-        currentPage.set(page);
-    }
+
 </script>
 
-<nav>
-    <ul>
-        {#each Object.values(pages) as page}
-            <li
-                on:click={() => setPage(page)}
-                class={$currentPage === page ? "selected" : ""}
-            >
-                {page}
-            </li>
-        {/each}
-    </ul>
-</nav>
+<ul>
+    {#each $codeSets as codeSet }
+    <li>
+        {codeSet.name}
+        <span> ({codeSet.system})</span>
+    </li>
+    {/each}
+</ul>
 
 <style>
+    span {
+        color: grey;
+    }
     ul {
         list-style-type: none;
         padding: 0;

@@ -1,15 +1,15 @@
 <script>
     import Footer from "./components/Footer.svelte";
     import Header from "./components/Header.svelte";
+    import Main from "./components/Main.svelte";
     import Sidebar from "./components/Sidebar.svelte";
-    import { currentPage } from "./lib/stores.js";
 </script>
 
 <div class="page">
     <Header />
     <div class="wrapper">
         <Sidebar />
-        <main>{$currentPage}</main>
+        <Main />
     </div>
     <Footer />
 </div>
@@ -32,12 +32,8 @@
         flex-direction: column;
     }
     div.wrapper {
+        flex-grow: 1;
         display: flex;
         flex-direction: row;
-    }
-    main {
-        min-width: 200px;
-        height: 100%;
-        background-color: var(--pal-heading-bg, white);
     }
 </style>

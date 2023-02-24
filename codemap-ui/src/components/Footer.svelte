@@ -19,4 +19,8 @@
         color: black;
         text-decoration: none;
     }
+    a:hover {
+        cursor: pointer;
+        color: #00d9c0;
+    }
 </style>
