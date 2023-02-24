@@ -25,6 +25,12 @@
         border: 0;
         margin: 0;
     }
+    :global(h1, h2, h3, h4, h5, h6) {
+        font-family: 'Proza Libre', sans-serif;
+    }
+    :global(input) {
+        font-family: 'Ubuntu Mono', monospace;
+    }
     div.page {
         width: 100%;
         height: 100%;
